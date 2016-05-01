@@ -8,6 +8,28 @@ html
 	body
 		.container
 			include navbar
+			//- flash msg parsing service
+			#success_msg
+			if success_msg.length
+				div.alert.alert-success.alert-dismissible(role="alert")
+					button.close(type='button', data-dismiss='alert', aria-label='Close')
+						span(aria-hidden='true') ×
+					| #{success_msg}
+
+			#error_msg
+			if error_msg.length
+				div.alert.alert-success.alert-dismissible(role="alert")
+					button.close(type='button', data-dismiss='alert', aria-label='Close')
+						span(aria-hidden='true') ×
+					| #{error_msg}
+
+			#error
+			if error.length
+				div.alert.alert-success.alert-dismissible(role="alert")
+					button.close(type='button', data-dismiss='alert', aria-label='Close')
+						span(aria-hidden='true') ×
+					| #{error}
+
 			.content
 				block content
 
