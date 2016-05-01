@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+	#message
+	if message
+		.alert.alert-danger(role='alert') #{message}
+	h1.text-center.poll-title Login to your account
+
+	form(method="post", action="")
+		.form-group
+			label User name
+			input.form-control(type="text", name="username", placeholder="username")
+		.form-group
+			label Password
+			input.form-control(type="password", name="password", placeholder="password")
+		.text-center
+			button.btn.btn-success.bu-size(type="submit", value="Login") Login

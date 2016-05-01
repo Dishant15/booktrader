@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+	#message
+	if message
+		.alert.alert-danger(role='alert') #{message}
+	h1.text-center.poll-title SignUp to BookTrader
+
+	#errors
+	if errors
+		each error in errors
+			div(class="alert alert-danger" role="alert") #{error.msg}
+
+	form(method="post", action="")
+		.form-group
+			label Username
+			input.form-control(type="text", name="username", placeholder="username")
+		.form-group
+			label Email
+			input.form-control(type="text", name="email", placeholder="your primary email id")
+		.form-group
+			label Password
+			input.form-control(type="password", name="password", placeholder="password")
+		.text-center
+			button.btn.btn-success.bu-size(type="submit", value="SignUp") SignUp
