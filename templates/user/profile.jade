@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+	h1.text-center #{loggeduser.username}
+
+	form(method="post", action="/users/update/details")
+		.form-group
+			label State
+			input.form-control(type="text", name="state", placeholder="State", value=loggeduser.state)
+		.form-group
+			label City
+			input.form-control(type="text", name="city", placeholder="Your home town or city you live in right now", value=loggeduser.city)
+		.text-center
+			button.btn.btn-success.bu-size(type="submit", value="Update") Update Details
+
+	#errors
+	if errors
+		each error in errors
+			div(class="alert alert-danger" role="alert") #{error.msg}
+
+	form(method="post", action="/users/update/password")
+		.form-group
+			label Current password
+			input.form-control(type="password", name="curr_pass", placeholder="Enter your current password")
+		.form-group
+			label New password
+			input.form-control(type="password", name="new_pass", placeholder="Enter new password")
+		.text-center
+			button.btn.btn-warning.bu-size(type="submit", value="change password") Change password
