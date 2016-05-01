@@ -16,7 +16,8 @@ nav.navbar.navbar-default
       ul.nav.navbar-nav.navbar-right
         #loggeduser
         if loggeduser
-          li.navbar-text Welcome, #{loggeduser.name}
+          li.navbar-text Welcome, 
+            b #{loggeduser.username}
           li
             a(href="/users/logout") LogOut
         else

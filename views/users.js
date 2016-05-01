@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 
 var User = require('../models/user');
 
@@ -8,6 +9,18 @@ router.get('/login', function(req, res) {
     res.render('user/login', {
     	title: 'LogIn | BookTrader'
     });
+});
+
+router.post('/login',
+  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/login',
+                                   failureFlash: true })
+);
+
+router.get('/logout', function(req, res){
+	req.logout();
+	req.flash('success_msg', 'Logout successfull!!');
+	res.redirect('/');
 });
 
 router.get('/signup', function(req, res) {
@@ -37,9 +50,10 @@ router.post('/signup', function(req, res) {
 
     	User.createUser(newUser, function(err, user){
     		if (err) {throw err;}
-    		console.log(user);
-    		req.flash('success_msg',"User signup successfull");
-    		res.redirect('/');
+    		req.flash('success_msg',"Welcome to BookTrader!!");
+    		req.login(user, function(err){
+    			res.redirect('/');
+    		});
     	});
     }
 });
