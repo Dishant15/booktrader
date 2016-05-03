@@ -13,8 +13,12 @@ nav.navbar.navbar-default
         li.active
           a(href="/")
             span.glyphicon.glyphicon-home(aria-hidden="true")
+        if loggeduser
+          li
+            a(href="/books/add") Add Book
+          li
+            a(href="/books/all") All Books
       ul.nav.navbar-nav.navbar-right
-        #loggeduser
         if loggeduser
           li.navbar-text Welcome, 
               b #{loggeduser.username}
