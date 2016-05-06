@@ -6,16 +6,9 @@ var request = require('request');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-	var options = {
-	    uri: 'https://www.googleapis.com/books/v1/volumes?q=the%20lost%20symbol',
-	    method: 'GET',
-	    json:true
-	}
-	request(options, function (error, response, body) {
-		if(error) throw error;
-		res.json(body.items[0]);
+	res.render('index', {
+		title: "Index | BookTrader"
 	});
-	// res.render('index');
 });
 
 router.get('/books/add', function(req, res){

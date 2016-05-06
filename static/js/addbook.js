@@ -1,3 +1,6 @@
+$(document).ready(function(){
+	$(window).resize(countBlock);
+});
 
 var BookAdder = React.createClass({
 	getInitialState: function() {
@@ -5,17 +8,24 @@ var BookAdder = React.createClass({
 	},
 
 	onAddClick: function(book_name) {
+
+		// show a loader for loading data
+		$('#loader').show(500);
+
 		var url = this.props.url;
 		// replace space with %20 in book name
 		url = url + book_name.replace(/ /g,"%20");
-		console.log(url);
 		$.ajax({
 			url: url,
 			dataType: 'json',
 			cache: false,
 
 			success: function(data) {
+				$('#loader').hide(500);
 				this.setState({data: data.items});
+				countBlock();
+				// $('.booklist').show(500);
+				// countBlock();
 			}.bind(this),
 
 			error: function(xhr, status, err) {
@@ -26,10 +36,13 @@ var BookAdder = React.createClass({
 
 	render: function() {
 		return (
-			<div className="addbook">
-				<h1 className="text-center">Add your books that you want to trade with others</h1>
+			<div className="bookadder">
+				<div className="jumbotron">
+					<h2 className="text-center">Add your books that you want to trade with others</h2>
+					<BookForm onSubmit={this.onAddClick} />
+				</div>
+				<div id="loader" className="text-center" hidden><h1>Loading data ..... </h1></div>
 				<BookList data={this.state.data}/>
-				<BookForm onSubmit={this.onAddClick} />
 			</div>
 		);
 	}
@@ -59,8 +72,15 @@ class Book extends React.Component {
 	render() {
 		return(
 			<div className="book">
-				<img className="img-responsive" src={this.props.image} />
-				<h3>{this.props.children}</h3>
+				<img className="img-responsive center-block" src={this.props.image} />
+				<div className="row">
+					<div className="col-sm-3">
+						<button className="btn btn-success"><span className="glyphicon glyphicon-plus text-center" aria-hidden="true"></span></button>
+					</div>
+					<div className="col-sm-9 text-warning">
+						<b><span dangerouslySetInnerHTML={{__html: this.props.children}} /></b>
+					</div>
+				</div>
 			</div>
 		);
 	}
@@ -82,9 +102,17 @@ var BookForm = React.createClass({
 
 	render: function(){
 		return(
-			<div>
-				<p><input value={this.state.book_name} onChange={this.searchChange} placeholder="Name of the book you want to add"/></p>
-				<p><button className="btn btn-primary" onClick={this.handleChange} > Search Book </button></p>
+			<div className="form-group mr-top-30">
+				<div className="row">
+					<div className="col-sm-2"></div>
+					<div className="col-sm-6">
+						<input className="form-control" value={this.state.book_name} onChange={this.searchChange} placeholder="Name of the book you want to add"/>
+					</div>
+					<div className="col-sm-2">
+						<button className="btn btn-primary" onClick={this.handleChange} ><span className="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+					</div>
+					<div className="col-sm-2"></div>
+				</div>
 			</div>
 		);
 	}
