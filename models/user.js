@@ -6,11 +6,16 @@ var UserSchema = mongoose.Schema({
 	username: {type:String, index:true},
 	password: {type: String, required : true},
 	email: String,
+  name:String,
 	city: String,
 	state: String
 },
 	{collection : 'user'}
 );
+
+UserSchema.methods.get_name = function() {
+  return this.name || this.username;
+};
 
 var User = module.exports = mongoose.model('User', UserSchema);
 

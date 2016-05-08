@@ -7,9 +7,15 @@ block content
 			div(class='book')
 				img(class='img-responsive center-block', src=book.image)
 				div(class='row')
-					div(class='col-sm-3')
-						button(class='btn btn-warning', data-toggle="tooltip", data-placement="bottom", title="Request Trade")
-							span(class='glyphicon glyphicon-refresh text-center', aria-hidden='true')
+
+					if loggeduser && book.owner == loggeduser._id
+						div(class='col-sm-3')
+							button(class='btn btn-warning', data-toggle="tooltip", data-placement="bottom", title="Request Trade", disabled)
+								span(class='glyphicon glyphicon-refresh text-center', aria-hidden='true')
+					else
+						div(class='col-sm-3')
+							a(class='btn btn-warning', href="/books/trade/#{book._id}", data-toggle="tooltip", data-placement="bottom", title="Request Trade")
+								span(class='glyphicon glyphicon-refresh text-center', aria-hidden='true')
 					div(class='col-sm-9 text-warning')
 						b #{book.name}
 
