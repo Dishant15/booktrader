@@ -79,3 +79,26 @@ var setBlocks = function(){
 	})
 
 }
+$(window).resize(countBlock);
+$(window).load(function(){
+	countBlock();
+	// enable tooltips on book buttons
+	$('[data-toggle="tooltip"]').tooltip();
+});
+
+
+document.addEventListener(
+    'load',
+    function(event){
+        var elm = event.target;
+        if( elm.nodeName.toLowerCase() === 'img' && $(elm).closest('.container').length && !$(elm).hasClass('loaded')){ 
+        // or any other filtering condition
+            $(elm).addClass('loaded');
+            if($('.container img.loaded').length === $('.container img').length) {          
+                // all images have been loaded
+                countBlock();
+            }
+        }
+    },
+    true // Capture event
+);

@@ -1,0 +1,17 @@
+extends layout
+
+block content
+	h1.text-center Books currently available for trade
+	.booklist
+		each book in book_list
+			div(class='book')
+				img(class='img-responsive center-block', src=book.image)
+				div(class='row')
+					div(class='col-sm-3')
+						button(class='btn btn-warning', data-toggle="tooltip", data-placement="bottom", title="Request Trade")
+							span(class='glyphicon glyphicon-refresh text-center', aria-hidden='true')
+					div(class='col-sm-9 text-warning')
+						b #{book.name}
+
+block scripts
+	script(src="/js/column_layout.js")

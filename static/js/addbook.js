@@ -1,11 +1,30 @@
-$(document).ready(function(){
-	$(window).resize(countBlock);
-});
+
+function addNewBook(btn) {
+	var $book = btn.parent().parent().parent();
+	var img_src = $book.children('img').attr('src');
+	var title = btn.parent().siblings().children().children().text();
+
+	var url = "/books/add";
+	$.post(url, {
+		image:img_src,
+		name: title
+	}, function (data, status) {
+		if(data.success){
+			alert("Book added");
+		} else {
+			alert("Book can not be added!! Something went wrong...");
+		}
+	})
+}
 
 var BookAdder = React.createClass({
 	getInitialState: function() {
 		return {data: []};
 	},
+
+	// componentDidMount: function(){
+	// 	this.onAddClick("harry potter");
+	// },
 
 	onAddClick: function(book_name) {
 
@@ -24,8 +43,11 @@ var BookAdder = React.createClass({
 				$('#loader').hide(500);
 				this.setState({data: data.items});
 				countBlock();
-				// $('.booklist').show(500);
-				// countBlock();
+				$('.newbook').on('click',function () {
+					var $this = $(this);
+					addNewBook($this);
+				});
+				$('[data-toggle="tooltip"]').tooltip();
 			}.bind(this),
 
 			error: function(xhr, status, err) {
@@ -38,7 +60,7 @@ var BookAdder = React.createClass({
 		return (
 			<div className="bookadder">
 				<div className="jumbotron">
-					<h2 className="text-center">Add your books that you want to trade with others</h2>
+					<h2 className="text-center">Add your books that you will like to trade with others</h2>
 					<BookForm onSubmit={this.onAddClick} />
 				</div>
 				<div id="loader" className="text-center" hidden><h1>Loading data ..... </h1></div>
@@ -75,7 +97,9 @@ class Book extends React.Component {
 				<img className="img-responsive center-block" src={this.props.image} />
 				<div className="row">
 					<div className="col-sm-3">
-						<button className="btn btn-success"><span className="glyphicon glyphicon-plus text-center" aria-hidden="true"></span></button>
+						<button className="btn btn-success newbook" data-toggle="tooltip" data-placement="bottom" title="Add Book">
+							<span className="glyphicon glyphicon-plus text-center" aria-hidden="true"></span>
+						</button>
 					</div>
 					<div className="col-sm-9 text-warning">
 						<b><span dangerouslySetInnerHTML={{__html: this.props.children}} /></b>
@@ -84,7 +108,7 @@ class Book extends React.Component {
 			</div>
 		);
 	}
-}
+};
 
 var BookForm = React.createClass({
 
