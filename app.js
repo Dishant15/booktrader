@@ -30,7 +30,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // setup database
-var dbUrl = "mongodb://localhost:27017/booktrade";
+// var dbUrl = "mongodb://localhost:27017/booktrade";
+var dbUrl = "mongodb://dishant:root@ds017852.mlab.com:17852/heroku_cthk2x4k"
 mongoose.connect(dbUrl,function(err, db){
   if(err){
     console.log(err);
