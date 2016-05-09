@@ -129,6 +129,11 @@ router.get('/trade/accept/:id', loginRequired, function(req, res){
 	var loggeduser = req.user;
 	Trade.findById(req.params.id, function(err, trade){
 		if(err) throw err;
+		if(trade.status != "N"){
+			// this trade has already been accepted or declined
+			res.json({update:false});
+			return null;
+		}
 		trade.status = "A";
 		trade.save();
 		var book_id = trade.book;
@@ -144,6 +149,11 @@ router.get('/trade/decline/:id', loginRequired, function(req, res){
 	var loggeduser = req.user;
 	Trade.findById(req.params.id, function(err, trade){
 		if(err) throw err;
+		if(trade.status != "N"){
+			// this trade has already been accepted or declined
+			res.json({update:false});
+			return null;
+		}
 		trade.status = "D";
 		trade.save();
 		res.json({update:true});

@@ -1,25 +1,58 @@
 extends layout
 
 block content
-	h3.text-center Ongoing trade requests
-	each trade in trade_list
-		p #{trade.book_name}  |  status : #{trade.status} | 
-			a(href="/trade/cancel/#{trade._id}") cancel
 
-	h3.text-center Trade request for you
-	each trade in req_in_list
-		p #{trade.book_name}  |  status : #{trade.status} | 
-			a(href="/trade/accept/#{trade._id}") Accept
-			|     
-			a(href="/trade/decline/#{trade._id}") Decline
+	if trade_list.length
+		.panel.panel-info
+			.panel-heading.text-center Your trade requests
+			table.table
+				each trade in trade_list
+					tr
+						td #{trade.book_name}  [ 
+							b #{trade.get_status()}
+							|	 ] 
+						if trade.status == "N"
+							td
+								.text-danger.trade_remove(url="/trade/cancel/#{trade._id}", data-toggle="tooltip", data-placement="left", title="Cancel request")
+									span(class="glyphicon glyphicon-remove" aria-hidden="true")
+						else
+							//- td just as a place holder so table dont break down
+							td  
 
-	h1.text-center My Books
-	.booklist
-		each book in book_list
-			div(class='book')
-				img(class='img-responsive center-block', src=book.image)
-				div(class='text-warning text-center')
-					b #{book.name}
+	if req_in_list.length
+		.panel.panel-warning
+			.panel-heading.text-center Trade requests for you
+			table.table
+				each trade in req_in_list
+					tr
+						td #{trade.book_name}  [ 
+							b #{trade.get_status()}
+							|	 ]
+						if trade.status == "N"
+							td.butn
+								.text-success.trade_accept(url="/trade/accept/#{trade._id}", data-toggle="tooltip", data-placement="left", title="Accept request")
+									span(class="glyphicon glyphicon-ok" aria-hidden="true")
+							td.butn
+								.text-danger.trade_decline(url="/trade/decline/#{trade._id}", data-toggle="tooltip", data-placement="left", title="Decline request")
+									span(class="glyphicon glyphicon-remove" aria-hidden="true")
+						else
+							td  
+							td  
+
+	h1.text-center.mr-top-30 My Books
+	if book_list.length
+		.booklist
+			each book in book_list
+				div(class='book')
+					img(class='img-responsive center-block', src=book.image)
+					div(class='text-warning text-center')
+						b #{book.name}
+	else
+		.text-center
+			.alert.alert-danger Looks like you have not added any books yet!!
+			.mr-top-30
+				a.btn.btn-success(href="/books/add") Add Books
+
 
 block scripts
 	script(src="/js/column_layout.js")

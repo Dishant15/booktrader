@@ -22,10 +22,8 @@ nav.navbar.navbar-default
             a(href="/books/my") My Books
       ul.nav.navbar-nav.navbar-right
         if loggeduser
-          li.navbar-text Welcome, 
-              b #{loggeduser.username}
           li
-            a(href="/users/profile") Profile
+            a(href="/users/profile") Settings
           li
             a(href="/users/logout") LogOut
         else

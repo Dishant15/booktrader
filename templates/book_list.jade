@@ -1,21 +1,23 @@
 extends layout
 
 block content
-	h1.text-center Books currently available for trade
+	h1.text-center.mr-top-30 Books currently available for trade
 	.booklist
 		each book in book_list
 			div(class='book')
 				img(class='img-responsive center-block', src=book.image)
 				div(class='row')
 
-					if loggeduser && book.traders.indexOf(loggeduser._id) != -1
+					if loggeduser && book.traders.indexOf(loggeduser._id) == -1
 						div(class='col-sm-3')
-							button(class='btn btn-danger', data-toggle="tooltip", data-placement="bottom", title="Request Trade", disabled)
+							button.trade_this(class='btn btn-warning', url="/books/trade/#{book._id}", data-toggle="tooltip", data-placement="bottom", title="Request Trade")
 								span(class='glyphicon glyphicon-refresh text-center', aria-hidden='true')
+						
 					else
 						div(class='col-sm-3')
-							a(class='btn btn-warning', href="/books/trade/#{book._id}", data-toggle="tooltip", data-placement="bottom", title="Request Trade")
+							button(class='btn btn-danger', disabled)
 								span(class='glyphicon glyphicon-refresh text-center', aria-hidden='true')
+						
 					div(class='col-sm-9 text-warning')
 						b #{book.name}
 

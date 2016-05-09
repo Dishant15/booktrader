@@ -32,3 +32,11 @@ a {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
+
+.trade_remove,
+.trade_accept,
+.trade_decline {
+	font-size: 120%;
+	cursor: pointer;
+	margin-top: 5px;
+}
