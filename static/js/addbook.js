@@ -4,27 +4,27 @@ function addNewBook(btn) {
 	var img_src = $book.children('img').attr('src');
 	var title = btn.parent().siblings().children().children().text();
 
+	btn.tooltip('hide');
+	btn.prop("disabled",true);
+	btn.removeClass('btn-success').addClass('btn-default');
+
 	var url = "/books/add";
 	$.post(url, {
 		image:img_src,
 		name: title
 	}, function (data, status) {
 		if(data.success){
-			alert("Book added");
+			// book added no worries
 		} else {
 			alert("Book can not be added!! Something went wrong...");
 		}
-	})
+	});
 }
 
 var BookAdder = React.createClass({
 	getInitialState: function() {
 		return {data: []};
 	},
-
-	// componentDidMount: function(){
-	// 	this.onAddClick("harry potter");
-	// },
 
 	onAddClick: function(book_name) {
 

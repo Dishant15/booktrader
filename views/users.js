@@ -26,7 +26,7 @@ router.post('/login',
 
 router.get('/logout', function(req, res){
 	req.logout();
-	req.flash('success_msg', 'Logout successfull!!');
+	req.flash('success_msg', 'You have been successfuly logged out!');
 	res.redirect('/');
 });
 
@@ -54,7 +54,7 @@ router.post('/signup', function(req, res) {
 
     	User.createUser(newUser, function(err, user){
     		if (err) {throw err;}
-    		req.flash('success_msg',"Welcome to BookTrader!!");
+    		req.flash('success_msg',"Signup successfull, Welcome to BookTrader!! Hope you will enjoy reading more books.");
     		req.login(user, function(err){
     			res.redirect('/');
     		});
