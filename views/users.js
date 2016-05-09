@@ -3,7 +3,6 @@ var router = express.Router();
 var passport = require('passport');
 
 var User = require('../models/user');
-var Trade = require('../models/trade');
 
 function loginRequired(req, res, next) {
 	if(req.user) next();
@@ -109,12 +108,6 @@ router.post('/update/password', loginRequired, function(req, res){
 			}
 		});
 	}
-});
-
-router.get('/trade/requests', loginRequired, function(req, res){
-	Trade.find({request_from:req.user._id}, function(err, trade){
-		res.json(trade);
-	});
 });
 
 module.exports = router;

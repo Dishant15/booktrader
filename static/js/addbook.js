@@ -63,7 +63,7 @@ var BookAdder = React.createClass({
 					<h2 className="text-center">Add your books that you will like to trade with others</h2>
 					<BookForm onSubmit={this.onAddClick} />
 				</div>
-				<div id="loader" className="text-center" hidden><h1>Loading data ..... </h1></div>
+				<div id="loader" className="text-center" hidden><h1>Loading Books ..... </h1></div>
 				<BookList data={this.state.data}/>
 			</div>
 		);

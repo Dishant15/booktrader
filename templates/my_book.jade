@@ -1,0 +1,25 @@
+extends layout
+
+block content
+	h3.text-center Ongoing trade requests
+	each trade in trade_list
+		p #{trade.book_name}  |  status : #{trade.status} | 
+			a(href="/trade/cancel/#{trade._id}") cancel
+
+	h3.text-center Trade request for you
+	each trade in req_in_list
+		p #{trade.book_name}  |  status : #{trade.status} | 
+			a(href="/trade/accept/#{trade._id}") Accept
+			|     
+			a(href="/trade/decline/#{trade._id}") Decline
+
+	h1.text-center My Books
+	.booklist
+		each book in book_list
+			div(class='book')
+				img(class='img-responsive center-block', src=book.image)
+				div(class='text-warning text-center')
+					b #{book.name}
+
+block scripts
+	script(src="/js/column_layout.js")

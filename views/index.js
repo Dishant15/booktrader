@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
+
 var Book = require('../models/book');
 var Trade = require('../models/trade');
 
@@ -30,8 +31,23 @@ router.get('/books/all', function(req, res){
 	});			
 });
 
-router.get('/books/my', function(req, res){
-	res.render
+router.get('/books/my',loginRequired, function(req, res){
+	var loggeduser = req.user;
+	Book.find({owner:loggeduser._id}, function(err, book_list){
+		if (err) throw err;
+		Trade.find({request_from:loggeduser._id}, function(err, trade_list){
+			if (err) throw err;
+			Trade.find({book_owner:loggeduser._id}, function(err, req_in_list){
+				if (err) throw err;
+				res.render("my_book", {
+					title:"My Books | BookTrader",
+					book_list: book_list,
+					trade_list: trade_list,
+					req_in_list: req_in_list
+				});
+			});
+		});
+	});
 });
 
 router.get('/books/add', loginRequired, function(req, res){
@@ -49,6 +65,8 @@ router.post('/books/add', function(req, res){
 	}
 	var book = req.body;
 	book.owner = req.user._id;
+	// this is just to show trade disable button on frontend
+	book.traders = [req.user._id];
 
 	Book(book).save(function(err, new_book){
 		if(err){
@@ -59,22 +77,76 @@ router.post('/books/add', function(req, res){
 	});
 });
 
-router.get('/books/trade/:id', function(req, res){
+router.get('/books/trade/:id',loginRequired, function(req, res){
 	if(!req.user){
 		// no loggeduser
 		res.json({success:false});
 		return null;
 	}
-	Book.findOne({_id:req.params.id}, function(err, book){
+	var book_id = req.params.id;
+	var loggeduser = req.user;
+
+
+	Book.findOne({_id:book_id}, function(err, book){
 		if(err) throw err;
-		Trade({
-			request_from: req.user._id,
-			book: book._id,
-			book_owner: book.owner
-		}).save(function(err, t){
-			if(err) throw err;
-			res.json({success:true});
+		if(book.traders.indexOf(loggeduser._id) == -1) {
+			// user can trade this book
+			Trade({
+				request_from: loggeduser._id,
+				book: book._id,
+				book_name: book.name,
+				book_owner: book.owner
+			}).save(function(err, t){
+				if(err) throw err;
+				res.json({success:true});
+			});
+			// update book traders
+			book.traders.push(loggeduser._id);
+			book.save(function(err, b){
+				if(err) throw err;
+			});
+		} else {
+			res.json({success:false});
+		}
+	});
+});
+
+router.get('/trade/cancel/:id', loginRequired, function(req, res){
+	var loggeduser = req.user;
+	Trade.findByIdAndRemove(req.params.id, function(err, t){
+		if(err) throw err;
+		var book_id = t.book;
+		Book.findById(book_id, function(err, t_book){
+			var index = t_book.traders.indexOf(loggeduser._id);
+			t_book.traders.splice(index, 1);
+			t_book.save();
 		});
+		res.json({removed:true});
+	});
+});
+
+router.get('/trade/accept/:id', loginRequired, function(req, res){
+	var loggeduser = req.user;
+	Trade.findById(req.params.id, function(err, trade){
+		if(err) throw err;
+		trade.status = "A";
+		trade.save();
+		var book_id = trade.book;
+		Book.findById(book_id, function(err, t_book){
+			t_book.status = "T";
+			t_book.save();
+		});
+		res.json({update:true});
+	});
+});
+
+router.get('/trade/decline/:id', loginRequired, function(req, res){
+	var loggeduser = req.user;
+	Trade.findById(req.params.id, function(err, trade){
+		if(err) throw err;
+		trade.status = "D";
+		trade.save();
+		res.json({update:true});
 	});
 });
 

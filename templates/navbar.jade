@@ -13,11 +13,13 @@ nav.navbar.navbar-default
         li.active
           a(href="/")
             span.glyphicon.glyphicon-home(aria-hidden="true")
+        li
+          a(href="/books/all") All Books
         if loggeduser
           li
             a(href="/books/add") Add Book
-        li
-          a(href="/books/all") All Books
+          li
+            a(href="/books/my") My Books
       ul.nav.navbar-nav.navbar-right
         if loggeduser
           li.navbar-text Welcome, 

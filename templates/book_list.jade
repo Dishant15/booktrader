@@ -8,9 +8,9 @@ block content
 				img(class='img-responsive center-block', src=book.image)
 				div(class='row')
 
-					if loggeduser && book.owner == loggeduser._id
+					if loggeduser && book.traders.indexOf(loggeduser._id) != -1
 						div(class='col-sm-3')
-							button(class='btn btn-warning', data-toggle="tooltip", data-placement="bottom", title="Request Trade", disabled)
+							button(class='btn btn-danger', data-toggle="tooltip", data-placement="bottom", title="Request Trade", disabled)
 								span(class='glyphicon glyphicon-refresh text-center', aria-hidden='true')
 					else
 						div(class='col-sm-3')

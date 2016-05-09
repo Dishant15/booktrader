@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var TradeSchema = mongoose.Schema({
 	request_from: String,
 	book: String,
+	book_name: String,
 	book_owner: String,
 	status: {type:String, default:"N"}   // N : created, A : Accepted, D : Denied
 },
