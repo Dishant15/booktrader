@@ -79,6 +79,7 @@ var setBlocks = function(){
 	})
 
 }
+
 $(window).resize(countBlock);
 $(window).load(function(){
 	countBlock();

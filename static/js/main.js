@@ -1,3 +1,9 @@
+$(document).ready(function() {
+	countBlock();
+	// enable tooltips on book buttons
+	$('[data-toggle="tooltip"]').tooltip();
+});
+
 $(window).load(function() {
 
 	$('[data-toggle="tooltip"]').tooltip();
